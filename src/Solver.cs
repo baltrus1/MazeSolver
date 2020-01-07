@@ -2,13 +2,13 @@
 using System.IO;
 using System.Text;
 
-class Maze {
+class Solver {
     private static void printError(string message) {
         Console.WriteLine("Incorrect input: " + message);
     }
-    
+
     static void Main(string[] args) {
-        System.IO.StreamReader file = new System.IO.StreamReader("Maze.txt");
+        var file = new System.IO.StreamReader("Maze.txt");
         string header = file.ReadLine();
         string[] dimentions = header.Split(' ');
 
@@ -39,13 +39,9 @@ class Maze {
             }
         }
 
-        for (int i = 0; i < height; ++i) {
-            for (int j = 0; j < length; ++j) {
-                Console.Write(cells[i, j] + " ");
-            }
+        Maze maze = new Maze(height, length);
+        maze.gridInit(cells);
 
-            Console.WriteLine();
-        }
-
+        maze.gridPrint();
     }
 }
