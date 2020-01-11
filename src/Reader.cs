@@ -39,7 +39,7 @@ class Reader {
             }
         }
 
-        Maze maze = new Maze(height, length);
+        var maze = new Maze(height, length);
         if (!maze.gridInit(cells)) {
             return null;
         }
