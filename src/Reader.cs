@@ -2,19 +2,19 @@
 using System.IO;
 using System.Text;
 
-class Solver {
+class Reader {
     private static void printError(string message) {
         Console.WriteLine("Incorrect input: " + message);
     }
 
-    static void Main(string[] args) {
-        var file = new System.IO.StreamReader("Maze.txt");
+    public static Maze readMaze(string path) {
+        var file = new System.IO.StreamReader(path);
         string header = file.ReadLine();
         string[] dimentions = header.Split(' ');
 
         if (dimentions.Length != 2) {
             printError("Header length should be 2, was: " + header.Length);
-            return;
+            return null;
         }
 
         int height = Int32.Parse(dimentions[0]);
@@ -31,7 +31,7 @@ class Solver {
             String[] cellsInLine = line.Split(' ');
             if (cellsInLine.Length != length) {
                 printError("Incorrect number of cells in line " + i);
-                return;
+                return null;
             }
 
             for(int j = 0; j < length; ++j) {
@@ -40,8 +40,10 @@ class Solver {
         }
 
         Maze maze = new Maze(height, length);
-        maze.gridInit(cells);
+        if (!maze.gridInit(cells)) {
+            return null;
+        }
 
-        maze.gridPrint();
+        return maze;
     }
 }
