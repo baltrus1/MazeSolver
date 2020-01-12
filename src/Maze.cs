@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using System.IO;
 
 public enum CellType {
 	Empty,
@@ -83,12 +84,12 @@ class Maze {
 		bool found = false;
 		var exitPoint = new Point();
 		var exitDirection = new Direction();
-
 		while (pointsQueue.Count != 0 && !found) {
 			Point current = pointsQueue.Dequeue();
 
 			foreach (var dir in directions) {
 				Point next = current + dir;
+
 				if (isOutOfBounds(next)) {
 					found = true;
 					exitPoint = current;
@@ -106,6 +107,10 @@ class Maze {
 
 				pointsQueue.Enqueue(next);
 			}
+		}
+		if (!found) {
+			Console.WriteLine("It's impossible to escape maze from position (" + start.x + ", " + start.y + ").");
+			return;
 		}
 
 		printPathInGrid(localGrid, exitPoint, exitDirection);
@@ -136,27 +141,30 @@ class Maze {
 		var dirStack = new Stack<Direction>();
 		dirStack.Push(exitDirection);
 
-		var parent = new Point();
-		parent = localGrid[exit.y,exit.x].parent;
-		
-		originalGridCopy[exit.y,exit.x].cellType = CellType.Visited;
+		if (!exit.Equals(start)) {
+			originalGridCopy[exit.y,exit.x].cellType = CellType.Visited;
 
-		while(parent.x != start.x || parent.y != start.y) {
-			originalGridCopy[parent.y,parent.x].cellType = CellType.Visited;
+			var parent = new Point();
+			parent = localGrid[exit.y,exit.x].parent;
+
+			while(!parent.Equals(start)) {
+				originalGridCopy[parent.y,parent.x].cellType = CellType.Visited;
+				dirStack.Push(getDirectionFromPoint(exit - parent));
+				exit.x = parent.x;
+				exit.y = parent.y;
+
+				parent = localGrid[parent.y,parent.x].parent;
+			}
+
 			dirStack.Push(getDirectionFromPoint(exit - parent));
-			exit.x = parent.x;
-			exit.y = parent.y;
-
-			parent = localGrid[parent.y,parent.x].parent;
 		}
 
-		dirStack.Push(getDirectionFromPoint(exit - parent));
 		printGrid(originalGridCopy, length, height);
 		printDirections(dirStack);
 	}
 
 	private bool isOutOfBounds(Point p) {
-		return p.x < 0 || p.y < 0 || p.x > length || p.y > height;
+		return p.x < 0 || p.y < 0 || p.x >= length || p.y >= height;
 	}
 
 	public void setStartPositions(int x, int y) {
@@ -220,6 +228,15 @@ class Maze {
 
 		Console.WriteLine(dirMessage);
 
+		writeToLogFile(dirMessage);
+	}
+
+	private void writeToLogFile(StringBuilder log) {
+		string fileName = "Log.txt";
+		using (StreamWriter sw = File.AppendText(fileName)) {
+	        sw.Write("Starting at position (" + start.x + ", " + start.y + "). ");
+	        sw.WriteLine(log);
+	    }
 	}
 
 	private string directionToString(Direction dir) {
