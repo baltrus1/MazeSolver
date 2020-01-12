@@ -7,9 +7,8 @@ Escaping the maze: precalculating the path and then going straight to the neares
 From project root run:
 	csc src/*
 
-There should be two binaries in root, MazeCalculator.exe and MazeExplorator.exe.
+Run with:
+	mono MazeSolver.ext Maze.txt
 
-To run binaries on OSX from project root:
-	mono MazeCalculator.exe Maze.txt
 
-Code could be compiled and ran on any platform.
+Code could be compiled and run on any platform.
