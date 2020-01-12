@@ -39,7 +39,6 @@ struct Point {
 class Cell {
 	public CellType cellType;
 	public Point parent;
-	public int pathFromStart = -1;
 
 	public Cell() { }
 
@@ -63,6 +62,7 @@ class Maze {
 				grid[i,j] = new Cell();
 			}
 		}
+
 		this.height = height;
 		this.length = length;
 
@@ -79,7 +79,6 @@ class Maze {
 
 		Queue<Point> pointsQueue = new Queue<Point>();
 		pointsQueue.Enqueue(start);
-		localGrid[start.y, start.x].pathFromStart = 0;
 
 		bool found = false;
 		var exitPoint = new Point();
@@ -103,11 +102,11 @@ class Maze {
 
 				localGrid[next.y,next.x].cellType = CellType.Visited;
 				localGrid[next.y,next.x].parent = current;
-				localGrid[next.y,next.x].pathFromStart = localGrid[current.y,current.x].pathFromStart + 1;
 
 				pointsQueue.Enqueue(next);
 			}
 		}
+
 		if (!found) {
 			Console.WriteLine("It's impossible to escape maze from position (" + start.x + ", " + start.y + ").");
 			return;
@@ -227,7 +226,6 @@ class Maze {
 		dirMessage.Append("You escaped the maze!\n");
 
 		Console.WriteLine(dirMessage);
-
 		writeToLogFile(dirMessage);
 	}
 
@@ -277,6 +275,7 @@ class Maze {
 
             Console.WriteLine();
         }
+        
         Console.WriteLine();
 	}
 }

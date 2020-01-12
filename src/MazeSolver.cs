@@ -45,11 +45,11 @@ class MazeSolver {
 
 	private static void printHelp() {
 		Console.WriteLine(@"Options:
-        e - explore maze. Adds path to closest exist if such exists, prints trail into file.
-        p - print current maze
-        s <x> <y> - set up new start position
-        q - quit
-        h - print this message
+    e - explore maze. Adds path to closest exist if such exists, prints trail into file.
+    p - print current maze
+    s <x> <y> - set up new start position
+    q - quit
+    h - print this message
 ");
 	}
 }

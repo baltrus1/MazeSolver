@@ -8,7 +8,7 @@ From project root run:
 	csc src/*
 
 Run with:
-	mono MazeSolver.ext Maze.txt
+	mono MazeSolver.exe Maze.txt
 
 
 Code could be compiled and run on any platform.

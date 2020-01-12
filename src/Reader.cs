@@ -20,7 +20,6 @@ class Reader {
         int height = Int32.Parse(dimentions[0]);
         int length = Int32.Parse(dimentions[1]);
 
-
         int[,] cells = new int[height, length];
 
         for (int i = 0; i < height; ++i) {
@@ -28,6 +27,7 @@ class Reader {
             if (string.IsNullOrEmpty(line)) {
                 printError("Height of the maze doesn't match the height specified in header");
             }
+            
             String[] cellsInLine = line.Split(' ');
             if (cellsInLine.Length != length) {
                 printError("Incorrect number of cells in line " + i);
